@@ -88,7 +88,7 @@ public class MainControllers {
                     break;
             }
         } while (true);
-    }
+    } // display main menu task 2.1
 
     private static void addNewServices() {
         boolean flagAddSer = true;
@@ -131,7 +131,7 @@ public class MainControllers {
                     break;
             }
         } while (flagAddSer);
-    }
+    } // task 2.2
 
     private static void addNewSer(int serviceType){
         String id;
@@ -237,7 +237,7 @@ public class MainControllers {
                 roomList.add(room);
                 break;
         }
-    }
+    } // task 2.2 & 4 (regex)
 
     private static void showService() {
         boolean flagShow = true;
@@ -299,7 +299,7 @@ public class MainControllers {
                     break;
             }
         } while (flagShow);
-    }
+    } // task 3 & 8
 
     private static void showSer(int serviceType) {
         switch (serviceType) {
@@ -324,7 +324,7 @@ public class MainControllers {
             default:
                 break;
         }
-    }
+    } // task 2
 
     private static void addNewCustomer() {
         String name;
@@ -417,7 +417,7 @@ public class MainControllers {
         address = scanner.nextLine();
         Customer customer = new Customer(name,identifyCard,gender,dob,phoneNumber,email,customerType,address);
         customerList.add(customer);
-    }
+    } // task 5
 
     private static void showInformationCustomers() {
         List<Customer> listShowCustomer = customerList.findAll();
@@ -426,7 +426,7 @@ public class MainControllers {
         for (int i = 0; i < listShowCustomer.size(); i++) {
             System.out.println((i +1)+". "+listShowCustomer.get(i).showInfor());
         }
-    }
+    } // task 6
 
     private static void addNewBooking() {
         List<Customer> listShowCustomer = customerList.findAll();
@@ -550,7 +550,7 @@ public class MainControllers {
         } while (flagBooking);
 
         System.out.println("Thank you for choosing our service!");
-    }
+    } // task 7
 
     private static void showSerNotDup(int serviceType) {
         switch (serviceType) {
@@ -584,7 +584,7 @@ public class MainControllers {
             default:
                 break;
         }
-    }
+    } // task 8
 
     private static void showInformationEmployee() {
         Map<String, Employee> showMap = addEmpToMap();
@@ -593,7 +593,7 @@ public class MainControllers {
             System.out.println(i+". "+entry.getKey()+" - "+entry.getValue());
             i++;
         }
-    }
+    } // task 9 (Map)
 
     private static Map<String, Employee> addEmpToMap() {
         List<Employee> listShowEmp = empList.findAll();
@@ -606,7 +606,7 @@ public class MainControllers {
             empMap.put(listIdEmp.get(i),listShowEmp.get(i));
         }
         return empMap;
-    }
+    } // task 9
 
     private static void cinema4D() {
         boolean flagCinema = true;
@@ -641,7 +641,7 @@ public class MainControllers {
                     break;
             }
         } while (flagCinema);
-    }
+    } // task 10 main (Queue)
 
     private static void buyTicket() {
         if (queue.size() == 5) {
@@ -670,14 +670,14 @@ public class MainControllers {
             } while (choiceCusTicket < 1 || choiceCusTicket > listCustomer.size());
             ticket.setIdCustomer(listCustomer.get(choiceCusTicket -1).getId());
             ticket.setNameCustomer(listCustomer.get(choiceCusTicket -1).getName());
-            ticket.setBuyTime(timeBuy());
+            ticket.setBuyTime(buyTime());
 
             queue.offer(ticket);
 //        customerQueue.add(ticket);
 //        ticketList.addTicket(ticket);
             System.out.println("Thank you for buying ticket!");
         }
-    }
+    } // task 10
     private static void showSoldTicket() {
         if (queue.size() == 5) {
             while (!queue.isEmpty()) {
@@ -698,8 +698,8 @@ public class MainControllers {
 //        for (int i = 0; i < listTicket.size(); i++) {
 //            System.out.println((i +1)+". "+listTicket.get(i).showInfor());
 //        }
-    }
-    private static String timeBuy() {
+    } // task 10
+    private static String buyTime() {
         return new SimpleDateFormat("HH:mm").format(new Date());
     }
 
@@ -744,7 +744,7 @@ public class MainControllers {
             }
         } while (flagCabinet);
 
-    }
+    } // task 11 (Stack)
 
     public static void main(String[] args) {
         displayMainMenu();
