@@ -2,10 +2,7 @@ package controllers;
 
 import commons.comparator.DobSortingAscending;
 import commons.exception.*;
-import commons.validation.customer_validation.DayOfBirthValidation;
-import commons.validation.customer_validation.EmailCusValidation;
-import commons.validation.customer_validation.GenderCusValidation;
-import commons.validation.customer_validation.IdCardCusValidation;
+import commons.validation.customer_validation.*;
 import commons.validation.service_validation.*;
 import models.*;
 import services.*;
@@ -26,13 +23,13 @@ public class MainControllers {
     static CustomerManagement customerList = new CustomerManagement();
     static BookingManagement bookingList = new BookingManagement();
     static EmployeeManagement empList = new EmployeeManagement();
+    //static TicketManagement ticketList = new TicketManagement();
 
-    static LinkedList<Customer> customerQueue = new LinkedList<>();
-    static List<String> timeBuyList = new ArrayList<>();
+    static Queue<Ticket> queue = new LinkedList<>();
 
     private static void displayMainMenu(){
         do {
-            System.out.println( "MAIN MENU\n" +
+            System.out.println( "\tMAIN MENU\n" +
                                 "1. Add New Services\n"+
                                 "2. Show Services\n"+
                                 "3. Add New Customer\n"+
@@ -40,10 +37,18 @@ public class MainControllers {
                                 "5. Add New Booking\n"+
                                 "6. Show Information of Employee\n"+
                                 "7. Cinema 4D\n"+
+                                "8. Cabinet Stack\n"+
                                 "0. Exit\n");
             int choiceMenu;
-            System.out.print("Your choice is : ");
-            choiceMenu = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Your choice is : ");
+                    choiceMenu = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format!");
+                }
+            }
             switch (choiceMenu) {
                 case 1:
                     addNewServices();
@@ -71,6 +76,10 @@ public class MainControllers {
                     //method in task 10
                     cinema4D();
                     break;
+                case 8:
+                    //method in task 11
+                    cabinetStack();
+                    break;
                 case 0:
                     System.exit(choiceMenu);
                     break;
@@ -90,9 +99,16 @@ public class MainControllers {
                                 "3. Add New Room\n"+
                                 "4. Back to Menu\n"+
                                 "0. Exit\n");
-            System.out.print("Your choice is : ");
             int choiceAddSer;
-            choiceAddSer = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Your choice is : ");
+                    choiceAddSer = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format!");
+                }
+            }
 
             switch (choiceAddSer) {
                 case 1:
@@ -226,7 +242,8 @@ public class MainControllers {
     private static void showService() {
         boolean flagShow = true;
         do {
-            System.out.println( "1. Show all Villa\n"+
+            System.out.println( "\n"+
+                                "1. Show all Villa\n"+
                                 "2. Show all House\n"+
                                 "3. Show all Room\n"+
                                 "4. Show ALL Name Villa NOT Duplicate\n"+
@@ -234,8 +251,16 @@ public class MainControllers {
                                 "6. Show ALL Name Room NOT Duplicate\n"+
                                 "7. Back to Menu\n"+
                                 "0. Exit\n");
-            System.out.print("Your choice is : ");
-            int choiceShowSer = Integer.parseInt(scanner.nextLine());
+            int choiceShowSer;
+            while (true) {
+                try {
+                    System.out.print("Your choice is : ");
+                    choiceShowSer = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format!");
+                }
+            }
             switch (choiceShowSer) {
                 case 1:
                     showSer(SERVICE_VILLA);
@@ -270,6 +295,7 @@ public class MainControllers {
                     //exit
                     break;
                 default:
+                    System.out.println("Failed");
                     break;
             }
         } while (flagShow);
@@ -360,9 +386,18 @@ public class MainControllers {
                 System.out.println(e.getMessage());
             }
         } // Dob
-
-        System.out.print("Enter Phone Number : ");
-        phoneNumber = scanner.nextLine();
+        while (true) {
+            try {
+                System.out.print("Enter Phone Number (0XXXXXXXXX) : ");
+                phoneNumber = scanner.nextLine();
+                if (!PhoneValidation.phoneValidate(phoneNumber)) {
+                    throw new PhoneException("Phone number must be in the correct format 0XXXXXXXXX");
+                }
+                break;
+            } catch (PhoneException e) {
+                System.out.println(e.getMessage());
+            }
+        } // phone
         while (true) {
             try {
                 System.out.print("Enter Email (abc@abc.abc) : ");
@@ -400,72 +435,121 @@ public class MainControllers {
         List<Room> listRoom = roomList.findAll();
 
         showInformationCustomers();
+
         int choiceCustomer;
         int choiceBookingMenu;
+        boolean flagBooking = true;
+
         do {
-            System.out.print("Which one? : ");
-            choiceCustomer = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Which one? : ");
+                    choiceCustomer = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format!");
+                }
+            }
             // người dùng chọn số từ 1 đến list.size()
             if (choiceCustomer < 1 || choiceCustomer > listShowCustomer.size()) {
                 System.out.println("Invalid Customer");
             }
         } while (choiceCustomer < 1 || choiceCustomer > listShowCustomer.size());
-        System.out.println( "BOOKING MENU\n"+
-                            "1. Booking Villa\n"+
-                            "2. Booking House\n"+
-                            "3. Booking Room\n"+
-                            "4. Back\n"+
-                            "0. Exit\n");
-        System.out.print("Which Service do you wanna book? : ");
-        choiceBookingMenu = Integer.parseInt(scanner.nextLine());
-        switch (choiceBookingMenu) {
-            case 1:
-                showSer(SERVICE_VILLA);
-                int choiceVillaBook;
-                do {
-                    System.out.print("Which Villa do you wanna book? : ");
-                    choiceVillaBook = Integer.parseInt(scanner.nextLine());
-                    // người dùng chọn số từ 1 đến list.size()
-                    if (choiceVillaBook < 1 || choiceVillaBook > listVilla.size()) {
-                        System.out.println("Invalid Villa");
-                    }
-                } while (choiceVillaBook < 1 || choiceVillaBook > listVilla.size());
-                listShowCustomer.get(choiceCustomer -1).setUseService(listVilla.get(choiceVillaBook -1));
 
-                bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
-                break;
-            case 2:
-                showSer(SERVICE_HOUSE);
-                int choiceHouseBook;
-                do {
-                    System.out.print("Which House do you wanna book? : ");
-                    choiceHouseBook = Integer.parseInt(scanner.nextLine());
-                    if (choiceHouseBook < 1 || choiceHouseBook > listHouse.size()) {
-                        System.out.println("Invalid House");
-                    }
-                } while (choiceHouseBook < 1 || choiceHouseBook > listHouse.size());
-                listShowCustomer.get(choiceCustomer -1).setUseService(listHouse.get(choiceHouseBook -1));
+        do {
+            System.out.println( "\tBOOKING MENU\n"+
+                                "1. Booking Villa\n"+
+                                "2. Booking House\n"+
+                                "3. Booking Room\n"+
+                                "4. Back\n"+
+                                "0. Exit\n");
+            while (true) {
+                try {
+                    System.out.print("Which Service do you wanna book? : ");
+                    choiceBookingMenu = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format!");
+                }
+            }
+            switch (choiceBookingMenu) {
+                case 1:
+                    showSer(SERVICE_VILLA);
+                    int choiceVillaBook;
+                    do {
+                        while (true) {
+                            try {
+                                System.out.print("Which Villa do you wanna book? : ");
+                                choiceVillaBook = Integer.parseInt(scanner.nextLine());
+                                break;
+                            } catch (NumberFormatException e) {
+                                System.out.println("Wrong format!");
+                            }
+                        }
+                        // người dùng chọn số từ 1 đến list.size()
+                        if (choiceVillaBook < 1 || choiceVillaBook > listVilla.size()) {
+                            System.out.println("Invalid Villa");
+                        }
+                    } while (choiceVillaBook < 1 || choiceVillaBook > listVilla.size());
 
-                bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
-                break;
-            case 3:
-                showSer(SERVICE_ROOM);
-                int choiceRoomBook;
-                do {
-                    System.out.print("Which Room do you wanna book? : ");
-                    choiceRoomBook = Integer.parseInt(scanner.nextLine());
-                    if (choiceRoomBook < 1 || choiceBookingMenu > listRoom.size()) {
-                        System.out.println("Invalid Room");
-                    }
-                } while (choiceRoomBook < 1 || choiceBookingMenu > listRoom.size());
-                listShowCustomer.get(choiceCustomer -1).setUseService(listRoom.get(choiceRoomBook -1));
+                    listShowCustomer.get(choiceCustomer -1).setUseService(listVilla.get(choiceVillaBook -1));
+                    bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
+                    flagBooking = false;
+                    break;
+                case 2:
+                    showSer(SERVICE_HOUSE);
+                    int choiceHouseBook;
+                    do {
+                        while (true) {
+                            try {
+                                System.out.print("Which House do you wanna book? : ");
+                                choiceHouseBook = Integer.parseInt(scanner.nextLine());
+                                break;
+                            } catch (NumberFormatException e) {
+                                System.out.println("Wrong format!");
+                            }
+                        }
+                        if (choiceHouseBook < 1 || choiceHouseBook > listHouse.size()) {
+                            System.out.println("Invalid House");
+                        }
+                    } while (choiceHouseBook < 1 || choiceHouseBook > listHouse.size());
 
-                bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
-                break;
-            default:
-                System.out.println("Failed");
-                break;
-        }
+                    listShowCustomer.get(choiceCustomer -1).setUseService(listHouse.get(choiceHouseBook -1));
+                    bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
+                    flagBooking = false;
+                    break;
+                case 3:
+                    showSer(SERVICE_ROOM);
+                    int choiceRoomBook;
+                    do {
+                        while (true) {
+                            try {
+                                System.out.print("Which Room do you wanna book? : ");
+                                choiceRoomBook = Integer.parseInt(scanner.nextLine());
+                                break;
+                            } catch (NumberFormatException e) {
+                                System.out.println("Wrong format!");
+                            }
+                        }
+                        if (choiceRoomBook < 1 || choiceBookingMenu > listRoom.size()) {
+                            System.out.println("Invalid Room");
+                        }
+                    } while (choiceRoomBook < 1 || choiceBookingMenu > listRoom.size());
+
+                    listShowCustomer.get(choiceCustomer -1).setUseService(listRoom.get(choiceRoomBook -1));
+                    bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
+                    flagBooking = false;
+                    break;
+                case 4:
+                    flagBooking = false;
+                    break;
+                default:
+                    System.out.println("Failed");
+                    break;
+            }
+        } while (flagBooking);
+
+        System.out.println("Thank you for choosing our service!");
     }
 
     private static void showSerNotDup(int serviceType) {
@@ -528,12 +612,20 @@ public class MainControllers {
         boolean flagCinema = true;
         int choiceCinema;
         do {
-            System.out.println( "1. Buy a Ticket\n" +
+            System.out.println( "\t CINEMA 4D\n"+
+                                "1. Buy a Ticket\n" +
                                 "2. Show List\n"+
                                 "3. Back\n" +
                                 "0. Exit\n");
-            System.out.print("Your choice is : ");
-            choiceCinema = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Your choice is : ");
+                    choiceCinema = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format!");
+                }
+            }
             switch (choiceCinema) {
                 case 1:
                     buyTicket(); // buy a ticket
@@ -552,41 +644,106 @@ public class MainControllers {
     }
 
     private static void buyTicket() {
-        List<Customer> listCustomer = customerList.findAll();
-        List<String> customerNameList = new ArrayList<>();
-        for(Customer customer : listCustomer) {
-            customerNameList.add(customer.getName());
-        }
-        for (int i = 0; i < customerNameList.size(); i++) {
-            System.out.println((i +1)+". "+customerNameList.get(i));
-        }
-        int choiceCusTicket;
-        do {
-            System.out.print("Which customer? : ");
-            choiceCusTicket = Integer.parseInt(scanner.nextLine());
-            if (choiceCusTicket < 1 || choiceCusTicket > customerNameList.size()) {
-                System.out.println("Invalid Customer");
+        if (queue.size() == 5) {
+            System.out.println("We are ran out of tickets");
+        } else {
+            System.out.println("\tBUY TICKET - JUST 5 TODAY");
+            Ticket ticket = new Ticket();
+            List<Customer> listCustomer = customerList.findAll();
+            for (int i = 0; i < listCustomer.size(); i++) {
+                System.out.println((i +1)+". "+listCustomer.get(i).getName());
             }
-        } while (choiceCusTicket < 1 || choiceCusTicket > customerNameList.size());
+            int choiceCusTicket;
+            do {
+                while (true) {
+                    try {
+                        System.out.print("Which customer? : ");
+                        choiceCusTicket = Integer.parseInt(scanner.nextLine());
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println("Wrong format!");
+                    }
+                }
+                if (choiceCusTicket < 1 || choiceCusTicket > listCustomer.size()) {
+                    System.out.println("Invalid Customer");
+                }
+            } while (choiceCusTicket < 1 || choiceCusTicket > listCustomer.size());
+            ticket.setIdCustomer(listCustomer.get(choiceCusTicket -1).getId());
+            ticket.setNameCustomer(listCustomer.get(choiceCusTicket -1).getName());
+            ticket.setBuyTime(timeBuy());
 
-        customerQueue.add(listCustomer.get(choiceCusTicket -1));
-        timeBuyList.add(timeBuy());
-        System.out.println("Thank you for buying ticket!");
+            queue.offer(ticket);
+//        customerQueue.add(ticket);
+//        ticketList.addTicket(ticket);
+            System.out.println("Thank you for buying ticket!");
+        }
     }
-
     private static void showSoldTicket() {
-        System.out.println("LIST SOLD TICKET");
-        if (!customerQueue.isEmpty()) {
-            for (int i = 0; i < customerQueue.size(); i++) {
-                System.out.println((i +1)+". Customer "+customerQueue.get(i).getName()+" bought a ticket at "+timeBuyList.get(i));
+        if (queue.size() == 5) {
+            while (!queue.isEmpty()) {
+                System.out.println(queue.poll().showInfor());
             }
         } else {
-            System.out.println("Please buy some ticket first!");
+            System.out.println("Tickets have not been sold out! ("+(5- queue.size())+" tickets left)");
         }
+//        if (!customerQueue.isEmpty()) {
+//            for (int i = 0; i < customerQueue.size(); i++) {
+//                System.out.println((i +1)+". "+customerQueue.get(i).getIdCustomer()+" - "+customerQueue.get(i).getNameCustomer()+" - "+customerQueue.get(i).getBuyTime());
+//            }
+//            System.out.println();
+//        } else {
+//            System.out.println("Please buy some ticket first!");
+//        }
+//        List<Ticket> listTicket = ticketList.findAll();
+//        for (int i = 0; i < listTicket.size(); i++) {
+//            System.out.println((i +1)+". "+listTicket.get(i).showInfor());
+//        }
     }
-
     private static String timeBuy() {
         return new SimpleDateFormat("HH:mm").format(new Date());
+    }
+
+    private static void cabinetStack() {
+        System.out.println( "\tCABINET STACK\n"+
+                            "1. Add Employee to Stack\n"+
+                            "2. Find Employee By Id\n"+
+                            "3. Back\n"+
+                            "4. Exit\n");
+        int choiceCabinet;
+        boolean flagCabinet = true;
+        do {
+            while (true) {
+                try {
+                    System.out.print("Your choice is : ");
+                    choiceCabinet = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format!");
+                }
+            }
+            switch (choiceCabinet) {
+                case 1:
+                    Cabinet.addAllToStack();
+                    break;
+                case 2:
+                    String id;
+                    System.out.print("Enter a ID to find : ");
+                    id = scanner.nextLine();
+
+                    Cabinet.findEmpById(id);
+                    break;
+                case 3:
+                    flagCabinet = false;
+                    break;
+                case 4:
+                    System.exit(choiceCabinet);
+                    break;
+                default:
+                    System.out.println("Failed");
+                    break;
+            }
+        } while (flagCabinet);
+
     }
 
     public static void main(String[] args) {

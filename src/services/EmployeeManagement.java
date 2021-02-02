@@ -20,27 +20,7 @@ public class EmployeeManagement implements CRUDInterfaces<Employee> {
     }
 
     @Override
-    public Employee findById(int id) {
-        return null;
-    }
-
-    @Override
     public void add(Employee employee) {
 
-    }
-
-    @Override
-    public void edit(Employee employee, int id) {
-
-    }
-
-    @Override
-    public void remove(int id) {
-
-    }
-
-    @Override
-    public boolean idExist(int id) {
-        return false;
     }
 }

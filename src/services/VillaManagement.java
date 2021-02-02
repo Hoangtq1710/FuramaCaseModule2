@@ -6,7 +6,7 @@ import models.Villa;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VillaManagement implements AdditionService<Villa> {
+public class VillaManagement implements CRUDInterfaces<Villa> {
     static ReadAndWriteFile<Villa> readAndWriteFile = new ReadAndWriteFile<>();
 
     @Override
@@ -21,34 +21,9 @@ public class VillaManagement implements AdditionService<Villa> {
     }
 
     @Override
-    public Villa findById(int id) {
-        return null;
-    }
-
-    @Override
     public void add(Villa villa) {
         List<Villa> list = new ArrayList<>();
         list.add(villa);
         readAndWriteFile.writeServiceToFile("villa.csv",list,true);
-    }
-
-    @Override
-    public void edit(Villa villa, int id) {
-
-    }
-
-    @Override
-    public void remove(int id) {
-
-    }
-
-    @Override
-    public boolean idExist(int id) {
-        return false;
-    }
-
-    @Override
-    public List<Villa> sortById() {
-        return null;
     }
 }
