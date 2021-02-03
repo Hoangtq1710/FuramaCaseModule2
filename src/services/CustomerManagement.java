@@ -32,8 +32,10 @@ public class CustomerManagement implements CRUDInterfaces<Customer>{
             return false;
         }
         for (int i = 0; i < name.length() -1; i++) {
-            if (name.charAt(i) == ' ' && (name.charAt(i +1) == ' ' || Character.isLowerCase(i +1))){
-                return false;
+            if (name.charAt(i) == ' '){
+                if ((name.charAt(i +1) == ' ' || Character.isLowerCase(name.charAt(i +1)))) {
+                    return false;
+                }
             }
         }
         if (name.charAt(name.length() - 1) == ' ') {

@@ -695,14 +695,14 @@ public class MainControllers {
     }
 
     private static void cabinetStack() {
-        Cabinet.addAllToStack();
-        System.out.println( "\tCABINET STACK\n"+
-                            "1. Find Employee By Id\n"+
-                            "2. Back\n"+
-                            "0. Exit\n");
         int choiceCabinet;
         boolean flagCabinet = true;
         do {
+            System.out.println( "\tCABINET STACK\n"+
+                    "1. Find Employee By Id\n"+
+                    "2. Back\n"+
+                    "0. Exit\n");
+            Cabinet.addAllToStack();
             while (true) {
                 try {
                     System.out.print("Your choice is : ");
@@ -718,9 +718,7 @@ public class MainControllers {
                     System.out.print("Enter a ID to find : ");
                     id = scanner.nextLine();
 
-                    if (Cabinet.findEmpById(id)) {
-                        flagCabinet = false;
-                    }
+                    Cabinet.findEmpById(id);
                     break;
                 case 2:
                     flagCabinet = false;

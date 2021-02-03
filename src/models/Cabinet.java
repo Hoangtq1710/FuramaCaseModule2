@@ -16,19 +16,18 @@ public class Cabinet {
         }
     }
 
-    public static boolean findEmpById(String id) {
+    public static void findEmpById(String id) {
         if (!stack.isEmpty()) {
             while (!stack.isEmpty()) {
                 Employee employee = stack.pop();
                 if (employee.getIdEmp().equals(id)) {
                     System.out.println(employee);
-                    return true;
+                    return;
                 }
             }
             System.out.println("Oops ID "+id+" didn't match any Employee ID!");
         } else {
             System.out.println("Stack is Empty!");
         }
-        return false;
     }
 }
