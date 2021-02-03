@@ -673,7 +673,6 @@ public class MainControllers {
             ticket.setBuyTime(buyTime());
 
             queue.offer(ticket);
-//        customerQueue.add(ticket);
 //        ticketList.addTicket(ticket);
             System.out.println("Thank you for buying ticket!");
         }
@@ -704,11 +703,11 @@ public class MainControllers {
     }
 
     private static void cabinetStack() {
+        Cabinet.addAllToStack();
         System.out.println( "\tCABINET STACK\n"+
-                            "1. Add Employee to Stack\n"+
-                            "2. Find Employee By Id\n"+
-                            "3. Back\n"+
-                            "4. Exit\n");
+                            "1. Find Employee By Id\n"+
+                            "2. Back\n"+
+                            "0. Exit\n");
         int choiceCabinet;
         boolean flagCabinet = true;
         do {
@@ -723,19 +722,18 @@ public class MainControllers {
             }
             switch (choiceCabinet) {
                 case 1:
-                    Cabinet.addAllToStack();
-                    break;
-                case 2:
                     String id;
                     System.out.print("Enter a ID to find : ");
                     id = scanner.nextLine();
 
-                    Cabinet.findEmpById(id);
+                    if (Cabinet.findEmpById(id)) {
+                        flagCabinet = false;
+                    }
                     break;
-                case 3:
+                case 2:
                     flagCabinet = false;
                     break;
-                case 4:
+                case 0:
                     System.exit(choiceCabinet);
                     break;
                 default:

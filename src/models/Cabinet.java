@@ -1,6 +1,5 @@
 package models;
 
-import commons.read_write.ReadAndWriteFile;
 import services.EmployeeManagement;
 
 import java.util.List;
@@ -17,23 +16,19 @@ public class Cabinet {
         }
     }
 
-    public static void findEmpById(String id) {
-        boolean flagFind = true;
+    public static boolean findEmpById(String id) {
         if (!stack.isEmpty()) {
-            for (Employee employee : stack) {
+            while (!stack.isEmpty()) {
+                Employee employee = stack.pop();
                 if (employee.getIdEmp().equals(id)) {
                     System.out.println(employee);
-                    flagFind = false;
-                    break;
-                } else {
-                    stack.pop();
+                    return true;
                 }
             }
-            if (flagFind) {
-                System.out.println("Oops ID "+id+" didn't match any Employee ID!");
-            }
+            System.out.println("Oops ID "+id+" didn't match any Employee ID!");
         } else {
             System.out.println("Stack is Empty!");
         }
+        return false;
     }
 }
