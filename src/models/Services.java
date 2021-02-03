@@ -74,7 +74,7 @@ public abstract class Services {
                 ", nameService = " + nameService +
                 ", usableArea = " + usableArea +
                 ", rentalCost = " + rentalCost +
-                ", amountPeople = " + amountPeople + "\n\t" +
+                ", amountPeople = " + amountPeople + "\n" +
                 "rentType = " + rentType
                 ;
     }

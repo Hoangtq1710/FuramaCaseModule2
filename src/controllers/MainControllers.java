@@ -24,7 +24,6 @@ public class MainControllers {
     static BookingManagement bookingList = new BookingManagement();
     static EmployeeManagement empList = new EmployeeManagement();
     //static TicketManagement ticketList = new TicketManagement();
-
     static Queue<Ticket> queue = new LinkedList<>();
 
     private static void displayMainMenu(){
@@ -433,6 +432,7 @@ public class MainControllers {
         List<Villa> listVilla = villaList.findAll();
         List<House> listHouse = houseList.findAll();
         List<Room> listRoom = roomList.findAll();
+        List<Customer> listShowBooking = new ArrayList<>();
 
         showInformationCustomers();
 
@@ -455,7 +455,7 @@ public class MainControllers {
                 System.out.println("Invalid Customer");
             }
         } while (choiceCustomer < 1 || choiceCustomer > listShowCustomer.size());
-
+        Customer choseCustomer = listShowCustomer.get(choiceCustomer -1);
         do {
             System.out.println( "\tBOOKING MENU\n"+
                                 "1. Booking Villa\n"+
@@ -492,8 +492,9 @@ public class MainControllers {
                         }
                     } while (choiceVillaBook < 1 || choiceVillaBook > listVilla.size());
 
-                    listShowCustomer.get(choiceCustomer -1).setUseService(listVilla.get(choiceVillaBook -1));
-                    bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
+                    choseCustomer.setUseService(listVilla.get(choiceVillaBook -1));
+                    bookingList.addBook(choseCustomer); // write to file
+                    listShowBooking.add(choseCustomer); // add to show later
                     flagBooking = false;
                     break;
                 case 2:
@@ -514,8 +515,9 @@ public class MainControllers {
                         }
                     } while (choiceHouseBook < 1 || choiceHouseBook > listHouse.size());
 
-                    listShowCustomer.get(choiceCustomer -1).setUseService(listHouse.get(choiceHouseBook -1));
-                    bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
+                    choseCustomer.setUseService(listHouse.get(choiceHouseBook -1));
+                    bookingList.addBook(choseCustomer); // write to file
+                    listShowBooking.add(choseCustomer); // add to show later
                     flagBooking = false;
                     break;
                 case 3:
@@ -536,8 +538,9 @@ public class MainControllers {
                         }
                     } while (choiceRoomBook < 1 || choiceBookingMenu > listRoom.size());
 
-                    listShowCustomer.get(choiceCustomer -1).setUseService(listRoom.get(choiceRoomBook -1));
-                    bookingList.addBook(listShowCustomer.get(choiceCustomer -1));
+                    choseCustomer.setUseService(listRoom.get(choiceRoomBook -1));
+                    bookingList.addBook(choseCustomer);
+                    listShowBooking.add(choseCustomer); // add to show later
                     flagBooking = false;
                     break;
                 case 4:
@@ -548,7 +551,7 @@ public class MainControllers {
                     break;
             }
         } while (flagBooking);
-
+        System.out.println("\tYOUR BOOKING INFORMATION : \n"+listShowBooking.get(0).showInfor()); //SHOW BOOKING
         System.out.println("Thank you for choosing our service!");
     } // task 7
 
@@ -673,6 +676,7 @@ public class MainControllers {
             ticket.setBuyTime(buyTime());
 
             queue.offer(ticket);
+            System.out.println("YOUR TICKET INFORMATION\n"+ticket.showInfor());
 //        ticketList.addTicket(ticket);
             System.out.println("Thank you for buying ticket!");
         }
@@ -685,18 +689,6 @@ public class MainControllers {
         } else {
             System.out.println("Tickets have not been sold out! ("+(5- queue.size())+" tickets left)");
         }
-//        if (!customerQueue.isEmpty()) {
-//            for (int i = 0; i < customerQueue.size(); i++) {
-//                System.out.println((i +1)+". "+customerQueue.get(i).getIdCustomer()+" - "+customerQueue.get(i).getNameCustomer()+" - "+customerQueue.get(i).getBuyTime());
-//            }
-//            System.out.println();
-//        } else {
-//            System.out.println("Please buy some ticket first!");
-//        }
-//        List<Ticket> listTicket = ticketList.findAll();
-//        for (int i = 0; i < listTicket.size(); i++) {
-//            System.out.println((i +1)+". "+listTicket.get(i).showInfor());
-//        }
     } // task 10
     private static String buyTime() {
         return new SimpleDateFormat("HH:mm").format(new Date());

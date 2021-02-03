@@ -119,12 +119,12 @@ public class Customer{
                 ", id = " + identifyCard +
                 ", gender = " + gender +
                 ", dob = " + dob +
-                ", phoneNumber = " + phoneNumber + "\n\t" +
+                ", phoneNumber = " + phoneNumber + "\n" +
                 "email = " + email +
                 ", customerType = " + customerType +
                 ", address = " + address;
         if (this.useService != null) {
-            result +=", useService = " + useService +"\n";
+            result +="\nUseService = " + this.useService.showInfor();
         }
         return result;
     }
