@@ -600,13 +600,9 @@ public class MainControllers {
 
     private static Map<String, Employee> addEmpToMap() {
         List<Employee> listShowEmp = empList.findAll();
-        List<String> listIdEmp = new ArrayList<>();
-        for(Employee employee : listShowEmp) {
-            listIdEmp.add(employee.getIdEmp());
-        }
         Map<String,Employee> empMap = new TreeMap<>();
-        for (int i = 0; i < listShowEmp.size(); i++) {
-            empMap.put(listIdEmp.get(i),listShowEmp.get(i));
+        for (Employee employee : listShowEmp) {
+            empMap.put(employee.getIdEmp(), employee);
         }
         return empMap;
     } // task 9
