@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadAndWriteFile<T> {
-    static final String PATH = "G:/FuramaResort/src/data/";
+    static final String PATH = "src/data/";
     public void writeServiceToFile(String nameFile, List<T> list, boolean notOverride) {
         File file = new File(PATH+nameFile);
         FileWriter fileWriter;
