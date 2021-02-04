@@ -162,24 +162,45 @@ public class MainControllers {
         } while (!NameValidation.nameSerValidate(name));
 
         do {
-            System.out.print("Enter Usable Area of Service (> 30.0) : ");
-            usableArea = Double.parseDouble(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Enter Usable Area of Service (> 30.0) : ");
+                    usableArea = Double.parseDouble(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format");
+                }
+            }
             if (!AreaValidation.areaValidate(usableArea)) {
                 System.out.println("Invalid Area");
             }
         } while (!AreaValidation.areaValidate(usableArea));
 
         do {
-            System.out.print("Enter Rental Cost of Service (> 0) : ");
-            rentalCost = Double.parseDouble(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Enter Rental Cost of Service (> 0) : ");
+                    rentalCost = Double.parseDouble(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format");
+                }
+            }
             if (!RentalCostValidation.rentalCostValidate(rentalCost)) {
                 System.out.println("Invalid Rental Cost");
             }
         } while (!RentalCostValidation.rentalCostValidate(rentalCost));
 
         do {
-            System.out.print("Enter Amount People of Service (0<N<20) : ");
-            amountPeople = Integer.parseInt(scanner.nextLine());
+            while (true) {
+                try {
+                    System.out.print("Enter Amount People of Service (0<N<20) : ");
+                    amountPeople = Integer.parseInt(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong format");
+                }
+            }
             if (!AmountPeopleValidation.amountPeopleValidate(amountPeople)) {
                 System.out.println("Invalid Amount People");
             }
@@ -205,8 +226,15 @@ public class MainControllers {
                 } while (!NameValidation.nameSerValidate(roomStandard));
 
                 do {
-                    System.out.print("Enter Floor of Service (> 0) : ");
-                    floor = Integer.parseInt(scanner.nextLine());
+                    while (true) {
+                        try {
+                            System.out.print("Enter Floor of Service (> 0) : ");
+                            floor = Integer.parseInt(scanner.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Wrong format");
+                        }
+                    }
                     if (!FloorValidation.floorValidate(floor)) {
                         System.out.println("Invalid Floor");
                     }
@@ -216,8 +244,15 @@ public class MainControllers {
                 description = scanner.nextLine();
                 if (serviceType == SERVICE_VILLA) {
                     do {
-                        System.out.print("Enter Pool Area of Service (> 30.0) : ");
-                        poolArea = Double.parseDouble(scanner.nextLine());
+                        while (true) {
+                            try {
+                                System.out.print("Enter Pool Area of Service (> 30.0) : ");
+                                poolArea = Double.parseDouble(scanner.nextLine());
+                                break;
+                            } catch (NumberFormatException e) {
+                                System.out.println("Wrong format");
+                            }
+                        }
                         if (!AreaValidation.areaValidate(poolArea)) {
                             System.out.println("Invalid Pool Area");
                         }
